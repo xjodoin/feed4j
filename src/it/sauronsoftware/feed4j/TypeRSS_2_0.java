@@ -26,6 +26,8 @@ import org.dom4j.QName;
  */
 class TypeRSS_2_0 extends TypeAbstract {
 
+	private static final String NS_DC = "http://purl.org/dc/elements/1.1/";
+	
 	/**
 	 * This method parses a dom4j Document representation assuming it is RSS 2.0
 	 * feed.
@@ -177,6 +179,19 @@ class TypeRSS_2_0 extends TypeAbstract {
 								}
 							}
 							item.setGUID(evalue);
+						} else if (ename.equals("author")) {
+							item.setAuthor(evalue);
+						} else if (ename.equals("pubDate")) {
+							try {
+								item.setPubDate(Constants.RFC_822_DATE_FORMAT
+										.parse(evalue));
+							} catch (ParseException e) {
+								;
+							}
+						}
+					} else if (ensuri.equals(NS_DC)) {
+						if (ename.equals("creator")) {
+							item.setCreator(evalue);
 						}
 					}
 				} else {

@@ -44,6 +44,16 @@ public class FeedHeader extends RawElement {
 	 * The feed image.
 	 */
 	private FeedImage image;
+	
+	/**
+	 * The feed copyright as HTML code.
+	 */
+	private String copyrightAsHTML;
+	
+	/**
+	 * The feed copyright as plain text.
+	 */
+	private String copyrightAsText;
 
 	/**
 	 * This method returns the feed description. It could be null.
@@ -178,6 +188,44 @@ public class FeedHeader extends RawElement {
 	 */
 	public void setURL(URL url) {
 		this.url = url;
+	}
+	
+	/**
+	 * This method return the feed copyright as HTML code. It could be null.
+	 * 
+	 * @return The feed copyright as HTML code (it could be null).
+	 */
+	public String getCopyrightAsHTML() {
+		return copyrightAsHTML;
+	}
+	
+	/**
+	 * This method sets the feed copyright as HTML code.
+	 * 
+	 * @param copyrightAsHTML
+	 *            The feed copyright.
+	 */
+	public void setCopyrightAsHTML(String copyrightAsHTML) {
+		this.copyrightAsHTML = copyrightAsHTML;
+	}
+	
+	/**
+	 * This method return the feed copyright as plain text. It could be null.
+	 * 
+	 * @return The feed copyright as plain text (it could be null).
+	 */
+	public String getCopyrightAsText() {
+		return copyrightAsText;
+	}
+	
+	/**
+	 * This method sets the feed copyright as plain text.
+	 * 
+	 * @param copyrightAsText
+	 *            The feed copyright.
+	 */
+	public void setCopyrightAsText(String copyrightAsText) {
+		this.copyrightAsText = copyrightAsText;
 	}
 
 }

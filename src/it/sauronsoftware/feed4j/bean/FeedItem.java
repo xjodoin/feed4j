@@ -23,6 +23,16 @@ public class FeedItem extends RawElement {
 	private String title = null;
 
 	/**
+	 * The item author.
+	 */
+	private String author = null;
+
+	/**
+	 * The item creator.
+	 */
+	private String creator = null;
+
+	/**
 	 * The item link.
 	 */
 	private URL link = null;
@@ -95,6 +105,44 @@ public class FeedItem extends RawElement {
 	 */
 	public void setGUID(String guid) {
 		GUID = guid;
+	}
+
+	/**
+	 * This method returns the item author.
+	 * 
+	 * @return The item author.
+	 */
+	public String getAuthor() {
+		return author;
+	}
+
+	/**
+	 * This method sets the item author.
+	 * 
+	 * @param author
+	 *            The item author.
+	 */
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	/**
+	 * This method returns the item creator.
+	 * 
+	 * @return The item creator.
+	 */
+	public String getCreator() {
+		return creator;
+	}
+
+	/**
+	 * This method sets the item creator.
+	 * 
+	 * @param creator
+	 *            The item creator.
+	 */
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 
 	/**
