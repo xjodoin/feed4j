@@ -2,3 +2,5 @@
 /test/*
 /.classpath
 /.project
+/.settings
+/target
