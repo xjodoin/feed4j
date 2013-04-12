@@ -2,7 +2,9 @@ package it.sauronsoftware.feed4j;
 
 import it.sauronsoftware.feed4j.bean.Feed;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import org.dom4j.Document;
@@ -38,7 +40,8 @@ public class FeedParser {
 			// Esegue il parsing iniziale del documento XML.
 			SAXReader saxReader = new SAXReader();
 			CharsetDetector charsetDetector = new CharsetDetector();
-			Document document = saxReader.read(charsetDetector.getReader(url.openStream(), "UTF-8"));
+			InputStream openStream = url.openStream();
+			Document document = saxReader.read(charsetDetector.getReader(new BufferedInputStream(openStream), "UTF-8"));
 			// Cerca il modulo di interpretazione del feed.
 			int code = FeedRecognizer.recognizeFeed(document);
 			switch (code) {
