@@ -2,11 +2,14 @@ package it.sauronsoftware.feed4j;
 
 import it.sauronsoftware.feed4j.bean.Feed;
 
+import java.io.IOException;
 import java.net.URL;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
+
+import com.ibm.icu.text.CharsetDetector;
 
 /**
  * The feed parser. It can parse RSS 1.0, RSS 2.0, Atom 0.3 and Atom 1.0.
@@ -34,7 +37,8 @@ public class FeedParser {
 		try {
 			// Esegue il parsing iniziale del documento XML.
 			SAXReader saxReader = new SAXReader();
-			Document document = saxReader.read(url);
+			CharsetDetector charsetDetector = new CharsetDetector();
+			Document document = saxReader.read(charsetDetector.getReader(url.openStream(), "UTF-8"));
 			// Cerca il modulo di interpretazione del feed.
 			int code = FeedRecognizer.recognizeFeed(document);
 			switch (code) {
@@ -49,9 +53,9 @@ public class FeedParser {
 			default:
 				throw new UnsupportedFeedException();
 			}
-		} catch (DocumentException e) {
+		} catch (DocumentException |IOException  e) {
 			throw new FeedXMLParseException(e);
-		}
+		} 
 	}
 
 }
