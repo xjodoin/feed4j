@@ -165,7 +165,7 @@ class TypeAtom_1_0 extends TypeAbstract {
 						if (aux != null) {
 							content = aux;
 						}
-					} else if (ename.equals("issued")) {
+					} else if (ename.equals("published")) {
 						String modified = element.getValue();
 						if (modified != null) {
 							try {
@@ -175,7 +175,7 @@ class TypeAtom_1_0 extends TypeAbstract {
 								;
 							}
 						}
-					} else if (ename.equals("modified")) {
+					} else if (ename.equals("updated")) {
 						String modified = element.getValue();
 						if (modified != null) {
 							try {
