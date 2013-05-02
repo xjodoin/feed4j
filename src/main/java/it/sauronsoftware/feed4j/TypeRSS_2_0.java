@@ -1,7 +1,7 @@
 package it.sauronsoftware.feed4j;
 
-import it.sauronsoftware.feed4j.bean.FeedEnclosure;
 import it.sauronsoftware.feed4j.bean.Feed;
+import it.sauronsoftware.feed4j.bean.FeedEnclosure;
 import it.sauronsoftware.feed4j.bean.FeedHeader;
 import it.sauronsoftware.feed4j.bean.FeedImage;
 import it.sauronsoftware.feed4j.bean.FeedItem;
@@ -13,11 +13,18 @@ import it.sauronsoftware.feed4j.html.HTMLOptimizer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Date;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatterBuilder;
+import org.joda.time.format.DateTimeParser;
+import org.joda.time.format.ISODateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * RSS 2.0 feed parser.
@@ -26,8 +33,10 @@ import org.dom4j.QName;
  */
 class TypeRSS_2_0 extends TypeAbstract {
 
+	private static Logger logger = LoggerFactory.getLogger(TypeRSS_2_0.class);
+
 	private static final String NS_DC = "http://purl.org/dc/elements/1.1/";
-	
+
 	/**
 	 * This method parses a dom4j Document representation assuming it is RSS 2.0
 	 * feed.
@@ -78,9 +87,8 @@ class TypeRSS_2_0 extends TypeAbstract {
 								}
 							} else if (ename.equals("pubDate")) {
 								try {
-									header
-											.setPubDate(Constants.RFC_822_DATE_FORMAT
-													.parse(evalue));
+									header.setPubDate(Constants.RFC_822_DATE_FORMAT
+											.parse(evalue));
 								} catch (ParseException e) {
 									;
 								}
@@ -182,12 +190,8 @@ class TypeRSS_2_0 extends TypeAbstract {
 						} else if (ename.equals("author")) {
 							item.setAuthor(evalue);
 						} else if (ename.equals("pubDate")) {
-							try {
-								item.setPubDate(Constants.RFC_822_DATE_FORMAT
-										.parse(evalue));
-							} catch (ParseException e) {
-								;
-							}
+							Date date = DateUtils.parse(evalue).toDate();
+							item.setPubDate(date);
 						}
 					} else if (ensuri.equals(NS_DC)) {
 						if (ename.equals("creator")) {

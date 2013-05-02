@@ -16,6 +16,7 @@ import java.text.ParseException;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * Atom 1.0 feed parser.
@@ -86,13 +87,9 @@ class TypeAtom_1_0 extends TypeAbstract {
 					} else if (ename.equals("modified")) {
 						String modified = element.getValue();
 						if (modified != null) {
-							try {
-								header
-										.setPubDate(Constants.ISO_8601_DATE_FORMAT
-												.parse(modified));
-							} catch (ParseException e) {
-								;
-							}
+							header.setPubDate(ISODateTimeFormat
+									.dateTimeParser().parseDateTime(modified)
+									.toDate());
 						}
 					} else if (ename.equals("entry")) {
 						FeedItem item = handleEntry(source, element);
@@ -168,22 +165,14 @@ class TypeAtom_1_0 extends TypeAbstract {
 					} else if (ename.equals("published")) {
 						String modified = element.getValue();
 						if (modified != null) {
-							try {
-								item.setPubDate(Constants.ISO_8601_DATE_FORMAT
-										.parse(modified));
-							} catch (ParseException e) {
-								;
-							}
+							item.setPubDate(ISODateTimeFormat.dateTimeParser()
+									.parseDateTime(modified).toDate());
 						}
 					} else if (ename.equals("updated")) {
 						String modified = element.getValue();
 						if (modified != null) {
-							try {
-								item.setPubDate(Constants.ISO_8601_DATE_FORMAT
-										.parse(modified));
-							} catch (ParseException e) {
-								;
-							}
+							item.setPubDate(ISODateTimeFormat.dateTimeParser()
+									.parseDateTime(modified).toDate());
 						}
 					}
 				}

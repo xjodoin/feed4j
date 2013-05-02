@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+
 /**
  * Constants collection for the package.
  * 
@@ -46,10 +47,5 @@ interface Constants {
 	 */
 	public DateFormat RFC_822_DATE_FORMAT = new SimpleDateFormat(
 			"EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'z", Locale.US);
-
-	/**
-	 * ISO 8601 compliant DateFormat.
-	 */
-	public DateFormat ISO_8601_DATE_FORMAT = new ISO8601DateFormat();
 
 }

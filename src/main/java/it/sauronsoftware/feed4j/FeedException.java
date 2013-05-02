@@ -5,7 +5,7 @@ package it.sauronsoftware.feed4j;
  * 
  * @author Carlo Pelliccia
  */
-public abstract class FeedException extends Exception {
+public abstract class FeedException extends RuntimeException {
 
 	public FeedException() {
 		super();

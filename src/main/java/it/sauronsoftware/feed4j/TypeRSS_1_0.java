@@ -15,6 +15,7 @@ import java.util.Iterator;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * RSS 1.0 feed parser.
@@ -88,13 +89,9 @@ class TypeRSS_1_0 extends TypeAbstract {
 						} else if (ensuri.equals(Constants.DC_NS_URI)) {
 							if (evalue != null) {
 								if (ename.equals("date")) {
-									try {
-										header
-												.setPubDate(Constants.ISO_8601_DATE_FORMAT
-														.parse(evalue));
-									} catch (ParseException e) {
-										;
-									}
+									header.setPubDate(ISODateTimeFormat
+											.dateTimeParser()
+											.parseDateTime(evalue).toDate());
 								} else if (ename.equals("language")) {
 									if (isValidLanguageCode(evalue)) {
 										header.setLanguage(evalue);
@@ -163,13 +160,9 @@ class TypeRSS_1_0 extends TypeAbstract {
 					} else if (ensuri.equals(Constants.DC_NS_URI)) {
 						if (evalue != null) {
 							if (ename.equals("date")) {
-								try {
-									item
-											.setPubDate(Constants.ISO_8601_DATE_FORMAT
-													.parse(evalue));
-								} catch (ParseException e) {
-									;
-								}
+								item.setPubDate(ISODateTimeFormat
+										.dateTimeParser().parseDateTime(evalue)
+										.toDate());
 							}
 						}
 					}
