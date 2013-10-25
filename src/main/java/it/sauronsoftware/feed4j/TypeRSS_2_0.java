@@ -36,6 +36,7 @@ class TypeRSS_2_0 extends TypeAbstract {
 	private static Logger logger = LoggerFactory.getLogger(TypeRSS_2_0.class);
 
 	private static final String NS_DC = "http://purl.org/dc/elements/1.1/";
+	private static final String NS_ATOM = "http://www.w3.org/2005/Atom";
 
 	/**
 	 * This method parses a dom4j Document representation assuming it is RSS 2.0
@@ -72,6 +73,7 @@ class TypeRSS_2_0 extends TypeAbstract {
 					String ensuri = element.getNamespaceURI();
 					String ename = element.getName();
 					String evalue = element.getValue();
+
 					if (evalue != null) {
 						// Textual element.
 						if (ensuri.equals(nsuri)) {
@@ -83,14 +85,14 @@ class TypeRSS_2_0 extends TypeAbstract {
 								try {
 									header.setLink(new URL(evalue));
 								} catch (MalformedURLException e) {
-									;
+									logger.error(e.getMessage(), e);
 								}
 							} else if (ename.equals("pubDate")) {
 								try {
 									header.setPubDate(Constants.RFC_822_DATE_FORMAT
 											.parse(evalue));
 								} catch (ParseException e) {
-									;
+									logger.error(e.getMessage(), e);
 								}
 							} else if (ename.equals("language")) {
 								if (isValidLanguageCode(evalue)) {
@@ -150,6 +152,7 @@ class TypeRSS_2_0 extends TypeAbstract {
 				String ensuri = element.getNamespaceURI();
 				String ename = element.getName();
 				String evalue = element.getValue();
+
 				if (evalue != null) {
 					// Textual element.
 					if (ensuri.equals(nsuri)) {
@@ -190,12 +193,15 @@ class TypeRSS_2_0 extends TypeAbstract {
 						} else if (ename.equals("author")) {
 							item.setAuthor(evalue);
 						} else if (ename.equals("pubDate")) {
-							Date date = DateUtils.parse(evalue).toDate();
-							item.setPubDate(date);
+							setPubDate(item, evalue);
 						}
 					} else if (ensuri.equals(NS_DC)) {
 						if (ename.equals("creator")) {
 							item.setCreator(evalue);
+						}
+					} else if (ensuri.equals(NS_ATOM)) {
+						if (ename.equals("updated")) {
+							setPubDate(item, evalue);
 						}
 					}
 				} else {
@@ -227,6 +233,11 @@ class TypeRSS_2_0 extends TypeAbstract {
 		}
 		// Well done.
 		return item;
+	}
+
+	private static void setPubDate(FeedItem item, String evalue) {
+		Date date = DateUtils.parse(evalue).toDate();
+		item.setPubDate(date);
 	}
 
 	/**

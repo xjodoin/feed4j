@@ -2,7 +2,6 @@ package it.sauronsoftware.feed4j;
 
 import it.sauronsoftware.feed4j.bean.Feed;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -13,14 +12,14 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ibm.icu.text.CharsetDetector;
 
 /**
  * The feed parser. It can parse RSS 1.0, RSS 2.0, Atom 0.3 and Atom 1.0.
@@ -48,16 +47,20 @@ public class FeedParser {
 	public static Feed parse(URL url) {
 		try {
 			// Esegue il parsing iniziale del documento XML.
-			SAXReader saxReader = new SAXReader(
-					new org.ccil.cowan.tagsoup.Parser());
-			CharsetDetector charsetDetector = new CharsetDetector();
+			SAXReader saxReader = new SAXReader();
 
-			DefaultHttpClient httpclient = new DefaultHttpClient();
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+			HttpParams params = httpClient.getParams();
+			int connectionTimeoutMillis = 30000;
+			HttpConnectionParams.setConnectionTimeout(params,
+					connectionTimeoutMillis);
+			int socketTimeoutMillis = 60000;
+			HttpConnectionParams.setSoTimeout(params, socketTimeoutMillis);
 			HttpGet httpGet = new HttpGet(url.toURI());
 
 			try {
 
-				HttpResponse response1 = httpclient.execute(httpGet);
+				HttpResponse response1 = httpClient.execute(httpGet);
 				HttpEntity entity = response1.getEntity();
 				InputStream content = entity.getContent();
 
@@ -65,15 +68,7 @@ public class FeedParser {
 
 				HttpEntity entity1 = response1.getEntity();
 
-				Header contentEncoding = entity.getContentEncoding();
-				String encoding = "UTF-8";
-
-				if (contentEncoding != null) {
-					encoding = contentEncoding.getValue();
-				}
-
-				Document document = saxReader.read(charsetDetector.getReader(
-						new BufferedInputStream(content), encoding));
+				Document document = saxReader.read(content);
 
 				// do something useful with the response body
 				// and ensure it is fully consumed

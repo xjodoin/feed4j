@@ -38,9 +38,20 @@ public class DateUtils {
 										.getParser(),
 								DateTimeFormat.forPattern(PATTERN_ASCTIME)
 										.getParser(),
-								DateTimeFormat.forPattern("dd MMM yyyy HH:mm:ss zzz")
-										.getParser(), forPattern.getParser() })
-				.toFormatter().parseDateTime(date);
+								DateTimeFormat.forPattern(
+										"dd MMM yyyy HH:mm:ss zzz").getParser(),
+								DateTimeFormat.forPattern(
+										"MMM dd, yyyy HH:mm:ss a zzz")
+										.getParser(),
+								DateTimeFormat.forPattern(
+										"dd MMM yyyy HH:mm:ss Z").getParser(),
+								DateTimeFormat
+										.forPattern("yyyy-M-d HH:mm:ss Z")
+										.getParser(),
+								forPattern.getParser(),
+								DateTimeFormat
+										.forPattern("yyyy-M-d'T'HH:mm:ssZ")
+										.getParser() }).toFormatter()
+				.parseDateTime(date);
 	}
-
 }
